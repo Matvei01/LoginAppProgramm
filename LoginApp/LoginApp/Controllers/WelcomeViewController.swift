@@ -11,7 +11,7 @@ import UIKit
 final class WelcomeViewController: UIViewController {
     
     // MARK: - Public Properties
-    var user = "Matvei"
+    var user = ""
     
     // MARK: - Private Properties
     private let primaryColor = UIColor(
@@ -50,7 +50,7 @@ final class WelcomeViewController: UIViewController {
     }()
     
     private lazy var logOutButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .system, primaryAction: buttonAction)
         button.setTitle("Log Out", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 21)
@@ -58,6 +58,11 @@ final class WelcomeViewController: UIViewController {
         
         return button
     }()
+    
+    // MARK: -  Action
+    private lazy var buttonAction = UIAction { [ unowned self ] _ in
+        dismiss(animated: true)
+    }
     
     // MARK: - Override Methods
     override func viewDidLoad() {

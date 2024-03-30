@@ -10,12 +10,15 @@ import UIKit
 // MARK: - LoginViewController
 final class LoginViewController: UIViewController {
     
+    // MARK: - Private Properties
+    private let user = "Matvei"
+    private let password = "password"
+    
     // MARK: - UI Elements
     private lazy var userNameTF: UITextField = {
         let textField = UITextField()
         textField.font = .systemFont(ofSize: 14)
         textField.placeholder = "User Name"
-        textField.delegate = self
         textField.borderStyle = .roundedRect
         
         return textField
@@ -25,14 +28,13 @@ final class LoginViewController: UIViewController {
         let textField = UITextField()
         textField.font = .systemFont(ofSize: 14)
         textField.placeholder = "Password"
-        textField.delegate = self
         textField.borderStyle = .roundedRect
         
         return textField
     }()
     
     private lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .system, primaryAction: loginButtonAction)
         button.backgroundColor = .systemBlue
         button.setTitle("Log in", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -44,17 +46,19 @@ final class LoginViewController: UIViewController {
     }()
     
     private lazy var forgotUserNameButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .system, primaryAction: questionButtonAction)
         button.setTitle("Forgot User Name?", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 13)
+        button.tag = 0
         
         return button
     }()
     
     private lazy var forgotPasswordButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .system, primaryAction: questionButtonAction)
         button.setTitle("Forgot Password?", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 13)
+        button.tag = 1
         
         return button
     }()
@@ -96,12 +100,49 @@ final class LoginViewController: UIViewController {
         return stackView
     }()
     
+    // MARK: -  Action
+    private lazy var loginButtonAction = UIAction { [ unowned self ] _ in
+        if userNameTF.text != user || passwordTF.text != password {
+            showAlert(
+                title: "Invalid login or password",
+                message: "Please, enter correct login and password",
+                textField: passwordTF
+            )
+        } else {
+            let welcomeVC = WelcomeViewController()
+            welcomeVC.user = user
+            welcomeVC.modalPresentationStyle = .fullScreen
+            
+            present(welcomeVC, animated: true)
+        }
+    }
     
+    private lazy var questionButtonAction = UIAction { [ unowned self ] action in
+        guard let sender = action.sender as? UIButton else { return }
+        
+        switch sender.tag {
+        case 0:
+            showAlert(title: "Oops!", message: "Your name is \(user) 😉")
+        default:
+            showAlert(title: "Oops!", message: "Your password is \(password) 😉")
+        }
+    }
     
     // MARK: - Override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        userNameTF.text = ""
+        passwordTF.text = ""
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
 }
 
@@ -147,8 +188,15 @@ private extension LoginViewController {
     }
 }
 
-// MARK: - UITextFieldDelegate
-extension LoginViewController: UITextFieldDelegate {
-    
+// MARK: - Alert Controller
+extension LoginViewController {
+    private func showAlert(title: String, message: String, textField: UITextField? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            textField?.text = ""
+        }
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
 }
 
