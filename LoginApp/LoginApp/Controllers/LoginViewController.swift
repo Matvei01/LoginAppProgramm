@@ -11,12 +11,12 @@ import UIKit
 final class LoginViewController: UIViewController {
     
     // MARK: - Private Properties
-    private let user = "Matvei"
-    private let password = "password"
+    private let user = User.getUser()
     
     // MARK: - UI Elements
     private lazy var userNameTF: UITextField = {
         let textField = UITextField()
+        textField.text = user.login
         textField.font = .systemFont(ofSize: 14)
         textField.placeholder = "User Name"
         textField.borderStyle = .roundedRect
@@ -28,6 +28,7 @@ final class LoginViewController: UIViewController {
     
     private lazy var passwordTF: UITextField = {
         let textField = UITextField()
+        textField.text = user.password
         textField.font = .systemFont(ofSize: 14)
         textField.placeholder = "Password"
         textField.borderStyle = .roundedRect
@@ -115,9 +116,9 @@ final class LoginViewController: UIViewController {
         
         switch sender.tag {
         case 0:
-            showAlert(title: "Oops!", message: "Your name is \(user) 😉")
+            showAlert(title: "Oops!", message: "Your name is \(user.login) 😉")
         default:
-            showAlert(title: "Oops!", message: "Your password is \(password) 😉")
+            showAlert(title: "Oops!", message: "Your password is \(user.password) 😉")
         }
     }
     
@@ -145,6 +146,8 @@ private extension LoginViewController {
         view.backgroundColor = .white
         addSubviews()
         setConstraints()
+        
+        print("User ID: ", user.id)
     }
     
     func addSubviews() {
@@ -158,18 +161,28 @@ private extension LoginViewController {
     }
     
     func loginButtonTapped() {
-        if userNameTF.text != user || passwordTF.text != password {
+        if userNameTF.text != user.login || passwordTF.text != user.password {
             showAlert(
                 title: "Invalid login or password",
                 message: "Please, enter correct login and password",
                 textField: passwordTF
             )
         } else {
-            let welcomeVC = WelcomeViewController()
-            welcomeVC.user = user
-            welcomeVC.modalPresentationStyle = .fullScreen
+            let tabBarController = TabBarController()
+            guard let viewControllers = tabBarController.viewControllers else { return }
+            viewControllers.forEach({ viewController in
+                if let navController = viewController as? UINavigationController {
+                    if let welcomeVC = navController.topViewController as? WelcomeViewController {
+                        welcomeVC.user = user
+                    } else if let userInfoVC = navController.viewControllers.last as? UserInfoViewController {
+                        userInfoVC.user = user
+                    }
+                }
+            })
             
-            present(welcomeVC, animated: true)
+            tabBarController.modalPresentationStyle = .fullScreen
+            
+            present(tabBarController, animated: true)
         }
     }
 }

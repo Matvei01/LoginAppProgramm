@@ -11,27 +11,17 @@ import UIKit
 final class WelcomeViewController: UIViewController {
     
     // MARK: - Public Properties
-    var user = ""
-    
-    // MARK: - Private Properties
-    private let primaryColor = UIColor(
-        red: 210/255,
-        green: 109/255,
-        blue: 128/255,
-        alpha: 1
-    )
-    private let secondaryColor = UIColor(
-        red: 107/255,
-        green: 148/255,
-        blue: 230/255,
-        alpha: 1
-    )
+    var user: User!
     
     // MARK: - UI Elements
     private lazy var welcomeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Welcome, \(user)"
+        label.text = """
+            Welcome, \(user.login)!
+            My name is \(user.person.fullName).
+            """
         label.textColor = .white
+        label.numberOfLines = 0
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +66,10 @@ private extension WelcomeViewController {
     func setupView() {
         view.addVerticalGradientLayer()
         addSubviews()
+        setupNavigationController()
         setConstraints()
+        
+        print("User ID: ", user.id)
     }
     
     func addSubviews() {
@@ -87,6 +80,13 @@ private extension WelcomeViewController {
         for subview in subviews {
             view.addSubview(subview)
         }
+    }
+    
+    func setupNavigationController() {
+        title = "LoginApp"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
     }
 }
 

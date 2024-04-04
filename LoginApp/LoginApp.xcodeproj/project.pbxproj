@@ -15,6 +15,9 @@
 		1A5410402BB88A3F001F222C /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A54103F2BB88A3F001F222C /* WelcomeViewController.swift */; };
 		1AB1A5182BBEDB4500B782F7 /* Extension + UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB1A5172BBEDB4500B782F7 /* Extension + UIView.swift */; };
 		1AB1A51B2BBEDCDC00B782F7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB1A51A2BBEDCDC00B782F7 /* User.swift */; };
+		1AB1A51D2BBEDE8E00B782F7 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB1A51C2BBEDE8E00B782F7 /* TabBarController.swift */; };
+		1AB1A51F2BBEE0B100B782F7 /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB1A51E2BBEE0B100B782F7 /* UserInfoViewController.swift */; };
+		1AB1A5212BBF030500B782F7 /* UserBioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB1A5202BBF030500B782F7 /* UserBioViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		1A54103F2BB88A3F001F222C /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		1AB1A5172BBEDB4500B782F7 /* Extension + UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UIView.swift"; sourceTree = "<group>"; };
 		1AB1A51A2BBEDCDC00B782F7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		1AB1A51C2BBEDE8E00B782F7 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		1AB1A51E2BBEE0B100B782F7 /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		1AB1A5202BBF030500B782F7 /* UserBioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBioViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,9 @@
 			children = (
 				1A54102B2BB8627C001F222C /* LoginViewController.swift */,
 				1A54103F2BB88A3F001F222C /* WelcomeViewController.swift */,
+				1AB1A51C2BBEDE8E00B782F7 /* TabBarController.swift */,
+				1AB1A51E2BBEE0B100B782F7 /* UserInfoViewController.swift */,
+				1AB1A5202BBF030500B782F7 /* UserBioViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -192,9 +201,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A54102C2BB8627C001F222C /* LoginViewController.swift in Sources */,
+				1AB1A51F2BBEE0B100B782F7 /* UserInfoViewController.swift in Sources */,
 				1AB1A5182BBEDB4500B782F7 /* Extension + UIView.swift in Sources */,
 				1AB1A51B2BBEDCDC00B782F7 /* User.swift in Sources */,
 				1A5410402BB88A3F001F222C /* WelcomeViewController.swift in Sources */,
+				1AB1A51D2BBEDE8E00B782F7 /* TabBarController.swift in Sources */,
+				1AB1A5212BBF030500B782F7 /* UserBioViewController.swift in Sources */,
 				1A5410282BB8627C001F222C /* AppDelegate.swift in Sources */,
 				1A54102A2BB8627C001F222C /* SceneDelegate.swift in Sources */,
 			);
