@@ -20,6 +20,8 @@ final class LoginViewController: UIViewController {
         textField.font = .systemFont(ofSize: 14)
         textField.placeholder = "User Name"
         textField.borderStyle = .roundedRect
+        textField.returnKeyType = .next
+        textField.delegate = self
         
         return textField
     }()
@@ -29,6 +31,9 @@ final class LoginViewController: UIViewController {
         textField.font = .systemFont(ofSize: 14)
         textField.placeholder = "Password"
         textField.borderStyle = .roundedRect
+        textField.returnKeyType = .done
+        textField.isSecureTextEntry = true
+        textField.delegate = self
         
         return textField
     }()
@@ -102,19 +107,7 @@ final class LoginViewController: UIViewController {
     
     // MARK: -  Action
     private lazy var loginButtonAction = UIAction { [ unowned self ] _ in
-        if userNameTF.text != user || passwordTF.text != password {
-            showAlert(
-                title: "Invalid login or password",
-                message: "Please, enter correct login and password",
-                textField: passwordTF
-            )
-        } else {
-            let welcomeVC = WelcomeViewController()
-            welcomeVC.user = user
-            welcomeVC.modalPresentationStyle = .fullScreen
-            
-            present(welcomeVC, animated: true)
-        }
+        loginButtonTapped()
     }
     
     private lazy var questionButtonAction = UIAction { [ unowned self ] action in
@@ -163,6 +156,22 @@ private extension LoginViewController {
             view.addSubview(subview)
         }
     }
+    
+    func loginButtonTapped() {
+        if userNameTF.text != user || passwordTF.text != password {
+            showAlert(
+                title: "Invalid login or password",
+                message: "Please, enter correct login and password",
+                textField: passwordTF
+            )
+        } else {
+            let welcomeVC = WelcomeViewController()
+            welcomeVC.user = user
+            welcomeVC.modalPresentationStyle = .fullScreen
+            
+            present(welcomeVC, animated: true)
+        }
+    }
 }
 
 // MARK: - Constraints
@@ -197,6 +206,18 @@ extension LoginViewController {
         }
         alert.addAction(okAction)
         present(alert, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == userNameTF {
+            passwordTF.becomeFirstResponder()
+        } else {
+            loginButtonTapped()
+        }
+        return true
     }
 }
 
