@@ -7,8 +7,9 @@
 
 import UIKit
 
+// MARK: - UserBioViewController
 final class UserBioViewController: UIViewController {
-
+    
     // MARK: - Public Properties
     var user: User!
     

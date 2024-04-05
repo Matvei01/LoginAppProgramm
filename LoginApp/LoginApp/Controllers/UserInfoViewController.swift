@@ -80,6 +80,7 @@ final class UserInfoViewController: UIViewController {
     private lazy var bioButtonPressed = UIAction { [ unowned self ] _ in
         let userBioVC = UserBioViewController()
         userBioVC.user = user
+        
         navigationController?.pushViewController(userBioVC, animated: true)
     }
     
@@ -118,7 +119,9 @@ private extension UserInfoViewController {
         title = user.person.fullName
         
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
         navigationController?.navigationBar.tintColor = .white
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
