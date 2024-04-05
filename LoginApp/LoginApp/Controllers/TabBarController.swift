@@ -8,12 +8,12 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         generateTabBar()
     }
-
+    
     private func generateTabBar() {
         let welcomeViewController = UINavigationController(
             rootViewController: WelcomeViewController()

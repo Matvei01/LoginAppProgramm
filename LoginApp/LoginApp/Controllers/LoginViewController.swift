@@ -15,95 +15,78 @@ final class LoginViewController: UIViewController {
     
     // MARK: - UI Elements
     private lazy var userNameTF: UITextField = {
-        let textField = UITextField()
-        textField.text = user.login
-        textField.font = .systemFont(ofSize: 14)
-        textField.placeholder = "User Name"
-        textField.borderStyle = .roundedRect
-        textField.returnKeyType = .next
-        textField.delegate = self
-        
-        return textField
+        createTextField(
+            text: user.login,
+            placeholder: "User Name",
+            returnKeyType: .next
+        )
     }()
     
     private lazy var passwordTF: UITextField = {
-        let textField = UITextField()
-        textField.text = user.password
-        textField.font = .systemFont(ofSize: 14)
-        textField.placeholder = "Password"
-        textField.borderStyle = .roundedRect
-        textField.returnKeyType = .done
-        textField.isSecureTextEntry = true
-        textField.delegate = self
-        
-        return textField
+        createTextField(
+            text: user.password,
+            placeholder: "Password",
+            returnKeyType: .done,
+            secureTextEntry: true
+        )
     }()
     
     private lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system, primaryAction: loginButtonAction)
-        button.backgroundColor = .systemBlue
-        button.setTitle("Log in", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 15)
-        button.layer.cornerRadius = 10
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
+        createButton(
+            title: "Log in",
+            font: .systemFont(ofSize: 15),
+            color: .systemBlue,
+            titleColor: .white,
+            radius: 10,
+            autoresizing: false,
+            action: loginButtonAction
+        )
     }()
     
     private lazy var forgotUserNameButton: UIButton = {
-        let button = UIButton(type: .system, primaryAction: questionButtonAction)
-        button.setTitle("Forgot User Name?", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 13)
-        button.tag = 0
-        
-        return button
+        createButton(
+            title: "Forgot User Name?",
+            font: .systemFont(ofSize: 13),
+            action: questionButtonAction,
+            tag: 0
+        )
     }()
     
     private lazy var forgotPasswordButton: UIButton = {
-        let button = UIButton(type: .system, primaryAction: questionButtonAction)
-        button.setTitle("Forgot Password?", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 13)
-        button.tag = 1
-        
-        return button
+        createButton(
+            title: "Forgot Password?",
+            font: .systemFont(ofSize: 13),
+            action: questionButtonAction,
+            tag: 1
+        )
     }()
     
     private lazy var authStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            userNameTF, passwordTF, loginButton
-        ])
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 16
-        
-        return stackView
+        createStackView(
+            subviews: [userNameTF, passwordTF, loginButton],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 16
+        )
     }()
     
     private lazy var questionsStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            forgotUserNameButton, forgotPasswordButton
-        ])
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 0
-        
-        return stackView
+        createStackView(
+            subviews: [forgotUserNameButton, forgotPasswordButton],
+            axis: .horizontal,
+            distribution: .equalSpacing,
+            spacing: 0
+        )
     }()
     
     private lazy var mainStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [
-            authStackView, questionsStackView
-        ])
-        stackView.axis = .vertical
-        stackView.alignment = .fill
-        stackView.distribution = .fill
-        stackView.spacing = 16
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackView
+        createStackView(
+            subviews: [authStackView, questionsStackView],
+            axis: .vertical,
+            distribution: .fill,
+            spacing: 16,
+            autoresizing: false
+        )
     }()
     
     // MARK: -  Action
@@ -151,13 +134,7 @@ private extension LoginViewController {
     }
     
     func addSubviews() {
-        setupSubviews(mainStackView)
-    }
-    
-    func setupSubviews(_ subviews: UIView... ) {
-        for subview in subviews {
-            view.addSubview(subview)
-        }
+        view.addSubview(mainStackView)
     }
     
     func loginButtonTapped() {
@@ -168,22 +145,80 @@ private extension LoginViewController {
                 textField: passwordTF
             )
         } else {
-            let tabBarController = TabBarController()
-            guard let viewControllers = tabBarController.viewControllers else { return }
-            viewControllers.forEach({ viewController in
-                if let navController = viewController as? UINavigationController {
-                    if let welcomeVC = navController.topViewController as? WelcomeViewController {
-                        welcomeVC.user = user
-                    } else if let userInfoVC = navController.viewControllers.last as? UserInfoViewController {
-                        userInfoVC.user = user
-                    }
-                }
-            })
-            
-            tabBarController.modalPresentationStyle = .fullScreen
-            
-            present(tabBarController, animated: true)
+            transferData()
         }
+    }
+    
+    func createTextField(text: String,
+                         placeholder: String,
+                         returnKeyType: UIReturnKeyType,
+                         secureTextEntry: Bool? = nil) -> UITextField {
+        
+        let textField = UITextField()
+        textField.text = text
+        textField.font = .systemFont(ofSize: 14)
+        textField.placeholder = placeholder
+        textField.borderStyle = .roundedRect
+        textField.returnKeyType = returnKeyType
+        textField.isSecureTextEntry = secureTextEntry ?? false
+        textField.delegate = self
+        
+        return textField
+    }
+    
+    func createButton(title: String,
+                      font: UIFont,
+                      color: UIColor? = nil,
+                      titleColor: UIColor? = nil,
+                      radius: CGFloat? = nil,
+                      autoresizing: Bool? = nil,
+                      action: UIAction,
+                      tag: Int? = nil) -> UIButton {
+        
+        let button = UIButton(type: .system, primaryAction: action)
+        button.backgroundColor = color
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(titleColor, for: .normal)
+        button.titleLabel?.font = font
+        button.layer.cornerRadius = radius ?? 0
+        button.tag = tag ?? 3
+        button.translatesAutoresizingMaskIntoConstraints = autoresizing ?? true
+        
+        return button
+    }
+    
+    func createStackView(subviews: [UIView],
+                         axis: NSLayoutConstraint.Axis,
+                         distribution: UIStackView.Distribution,
+                         spacing: CGFloat,
+                         autoresizing: Bool? = nil) -> UIStackView {
+        
+        let stackView = UIStackView(arrangedSubviews: subviews)
+        stackView.axis = axis
+        stackView.alignment = .fill
+        stackView.distribution = distribution
+        stackView.spacing = spacing
+        stackView.translatesAutoresizingMaskIntoConstraints = autoresizing ?? true
+        
+        return stackView
+    }
+    
+    func transferData() {
+        let tabBarController = TabBarController()
+        guard let viewControllers = tabBarController.viewControllers else { return }
+        viewControllers.forEach({ viewController in
+            if let navController = viewController as? UINavigationController {
+                if let welcomeVC = navController.topViewController as? WelcomeViewController {
+                    welcomeVC.user = user
+                } else if let userInfoVC = navController.viewControllers.last as? UserInfoViewController {
+                    userInfoVC.user = user
+                }
+            }
+        })
+        
+        tabBarController.modalPresentationStyle = .fullScreen
+        
+        present(tabBarController, animated: true)
     }
 }
 

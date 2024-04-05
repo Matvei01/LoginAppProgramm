@@ -15,38 +15,25 @@ final class WelcomeViewController: UIViewController {
     
     // MARK: - UI Elements
     private lazy var welcomeLabel: UILabel = {
-        let label = UILabel()
-        label.text = """
-            Welcome, \(user.login)!
-            My name is \(user.person.fullName).
-            """
-        label.textColor = .white
-        label.numberOfLines = 0
-        label.font = .systemFont(ofSize: 24, weight: .bold)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
+        createLabel(
+            text: """
+        Welcome, \(user.login)!
+        My name is \(user.person.fullName).
+        """,
+            font: .systemFont(ofSize: 24, weight: .bold),
+            textColor: .white,
+            lines: 0,
+            alignment: .center
+        )
     }()
     
     // MARK: - UI Elements
     private lazy var palmLabel: UILabel = {
-        let label = UILabel()
-        label.text = "👋"
-        label.font = .systemFont(ofSize: 58)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
+        createLabel(text: "👋", font: .systemFont(ofSize: 58))
     }()
     
     private lazy var logOutButton: UIButton = {
-        let button = UIButton(type: .system, primaryAction: buttonAction)
-        button.setTitle("Log Out", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 21)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
+        createButton()
     }()
     
     // MARK: -  Action
@@ -73,7 +60,11 @@ private extension WelcomeViewController {
     }
     
     func addSubviews() {
-        setupSubviews(welcomeLabel, palmLabel, logOutButton)
+        setupSubviews(
+            welcomeLabel,
+            palmLabel,
+            logOutButton
+        )
     }
     
     func setupSubviews(_ subviews: UIView... ) {
@@ -83,10 +74,38 @@ private extension WelcomeViewController {
     }
     
     func setupNavigationController() {
-        title = "LoginApp"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        title = "Home"
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
         navigationController?.navigationBar.tintColor = .white
+    }
+    
+    func createLabel(text: String,
+                     font: UIFont,
+                     textColor: UIColor? = nil,
+                     lines: Int? = nil,
+                     alignment:  NSTextAlignment? = nil) -> UILabel {
+        
+        let label = UILabel()
+        label.text = text
+        label.textColor = textColor
+        label.numberOfLines = lines ?? 1
+        label.font = font
+        label.textAlignment = alignment ?? .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }
+    
+    func createButton() -> UIButton {
+        let button = UIButton(type: .system, primaryAction: buttonAction)
+        button.setTitle("Log Out", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 21)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
     }
 }
 
@@ -100,15 +119,17 @@ private extension WelcomeViewController {
     
     func setConstraintsForWelcomeLabel() {
         NSLayoutConstraint.activate([
-            welcomeLabel.centerXAnchor.constraint(
-                equalTo: view.centerXAnchor
+            welcomeLabel.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 16
+            ),
+            welcomeLabel.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: -16
             ),
             welcomeLabel.topAnchor.constraint(
-                
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 194
-            ),
-            welcomeLabel.widthAnchor.constraint(
-                equalToConstant: 200
+                equalTo: view.safeAreaLayoutGuide.topAnchor,
+                constant: 100
             )
         ])
     }
@@ -119,7 +140,8 @@ private extension WelcomeViewController {
                 equalTo: view.centerXAnchor
             ),
             palmLabel.topAnchor.constraint(
-                equalTo: welcomeLabel.bottomAnchor, constant: 40
+                equalTo: welcomeLabel.bottomAnchor,
+                constant: 40
             )
         ])
     }
@@ -130,7 +152,8 @@ private extension WelcomeViewController {
                 equalTo: view.centerXAnchor
             ),
             logOutButton.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -122
+                equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                constant: -122
             )
         ])
     }
